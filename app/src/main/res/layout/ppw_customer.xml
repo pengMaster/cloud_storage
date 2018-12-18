@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:ignore="HardcodedText">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="285dp"
+        android:layout_height="149dp"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="17dp"
+        tools:ignore="HardcodedText">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="149dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_pay_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:text="提示"
+                android:textColor="@color/red"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_pay_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_pay_result"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="还原将把文件还原到相册"
+                android:textColor="@color/black_34"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/ll_bottom"
+                android:background="@color/white_f2" />
+
+            <LinearLayout
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_sure"
+                    android:layout_width="0dp"
+                    android:layout_height="49dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="确  定"
+                    android:textColor="@color/red"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_f2" />
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="49dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="取  消"
+                    android:textColor="@color/black_34"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

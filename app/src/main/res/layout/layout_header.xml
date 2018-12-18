@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mRl_layout"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:background="@color/green"
+    android:gravity="center_vertical">
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="@null" />
+
+
+    <ImageView
+        android:id="@+id/iv_topbar_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/notice_setting_back" />
+
+
+    <TextView
+        android:id="@+id/tv_topbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="文件列表"
+        android:textColor="@color/color_white"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/tv_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:text="退出"
+        android:textColor="@color/color_white"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

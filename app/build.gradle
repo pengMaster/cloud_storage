@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "king.private.space"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 20181205
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters  'x86', 'armeabi-v7a'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace(".apk", "cloud-android-v${defaultConfig.versionName}" + "_" + new Date().format("yyyyMMdd") + ".apk")
+                outputFileName = fileName
+            }
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'org.jetbrains.anko:anko-common:0.8.2'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(':tool')
+    //网络请求
+    implementation files('libs/okhttputils-2_6_2.jar')
+    //gson解析
+    implementation 'org.kie.modules:com-google-code-gson:6.5.0.Final'
+    //okHttp3
+    implementation 'com.squareup.okhttp3:okhttp-ws:3.4.2'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.5'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.5'
+    //运行时权限
+    implementation 'pub.devrel:easypermissions:1.2.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    //butterknife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //数据库
+    implementation 'org.litepal.android:core:1.4.1'
+
+    implementation 'com.dmcBig:mediapicker:+'
+
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+
+    //视频播放
+    compile 'com.shuyu:gsyVideoPlayer-java:5.0.1'
+    //主流cpu
+    compile 'com.shuyu:gsyVideoPlayer-armv7a:5.0.1'
+    compile 'com.shuyu:gsyVideoPlayer-arm64:5.0.1'
+
+}
