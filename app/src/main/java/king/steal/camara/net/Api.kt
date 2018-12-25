@@ -23,6 +23,8 @@ class Api {
         val getCloudFileList = "getCloudFileList"
         val upLoadCloudPic = "upLoadCloudPic"
         val upLoadCloudVideo = "upLoadCloudVideo"
+        val saveNote = "saveNote"
+        val getNoteList = "getNoteList"
 
     }
 }

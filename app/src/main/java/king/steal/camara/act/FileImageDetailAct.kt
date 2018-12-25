@@ -16,10 +16,17 @@ import kotlinx.android.synthetic.main.act_file_detail.*
 import com.dmcbig.mediapicker.PickerConfig
 import com.dmcbig.mediapicker.PickerActivity
 import com.dmcbig.mediapicker.entity.Media
+import com.zhy.http.okhttp.OkHttpUtils
+import com.zhy.http.okhttp.callback.StringCallback
 import king.steal.camara.adapter.FileDetailAdapter
 import king.steal.camara.iface.OnLongClick
+import king.steal.camara.net.Api
 import king.steal.camara.utils.*
+import king.steal.tool.StealUtils
+import okhttp3.Call
+import org.jetbrains.anko.async
 import java.io.File
+import java.lang.Exception
 
 
 /**
@@ -35,6 +42,7 @@ class FileImageDetailAct : BaseActivity() {
 
     var select: ArrayList<Media>? = ArrayList()
     var exists: ArrayList<Media>? = ArrayList()
+    var selectsUpload: ArrayList<Media>? = ArrayList()
     lateinit var itemBean: CloudFileBean
     lateinit var adapter: FileDetailAdapter
 
@@ -53,8 +61,8 @@ class FileImageDetailAct : BaseActivity() {
         }
         exists = FileUtils.getImagesByPath("$outBasePath/${itemBean.id}")
         adapter = FileDetailAdapter(mGridView, exists, this@FileImageDetailAct, false, object : OnLongClick {
-            override fun onLongClick(path: String,name: String) {
-                itemLongHandle(path,name)
+            override fun onLongClick(path: String, name: String) {
+                itemLongHandle(path, name)
             }
         })
         mGridView.adapter = adapter
@@ -64,7 +72,7 @@ class FileImageDetailAct : BaseActivity() {
      * 删除 还原 操作
      */
     @SuppressLint("RestrictedApi")
-    private fun itemLongHandle(path: String,name: String) {
+    private fun itemLongHandle(path: String, name: String) {
         ll_bottom.apply {
             visibility = View.VISIBLE
             findViewById<LinearLayout>(R.id.ll_restore).setOnClickListener {
@@ -73,20 +81,20 @@ class FileImageDetailAct : BaseActivity() {
                     ToastUtils.showToast("请先加密文件")
                     return@setOnClickListener
                 }
-                FileUtils.CopySdcardFile(path,imageParentPath+name)
+                FileUtils.CopySdcardFile(path, imageParentPath + name)
                 val file = File(path)
                 if (file.isFile) {
                     //通知相册更新
                     file.delete()
                     for (index in 0 until exists!!.size) {
-                        if (index<exists!!.size && exists!![index].path == path)
+                        if (index < exists!!.size && exists!![index].path == path)
                             exists!!.remove(exists!![index])
                     }
 
                     adapter = FileDetailAdapter(mGridView, exists, this@FileImageDetailAct, false, object : OnLongClick {
                         @SuppressLint("RestrictedApi")
-                        override fun onLongClick(path: String,name: String) {
-                            itemLongHandle(path,name)
+                        override fun onLongClick(path: String, name: String) {
+                            itemLongHandle(path, name)
                         }
                     })
                     mGridView.adapter = adapter
@@ -94,7 +102,7 @@ class FileImageDetailAct : BaseActivity() {
                     mButton.visibility = View.VISIBLE
                     visibility = View.GONE
 
-                    notifyFileUpdate(imageParentPath+name,name)
+                    notifyFileUpdate(imageParentPath + name, name)
 
                     ToastUtils.showToast("还原成功")
                 }
@@ -105,14 +113,14 @@ class FileImageDetailAct : BaseActivity() {
                     //通知相册更新
                     file.delete()
                     for (index in 0 until exists!!.size) {
-                        if (index<exists!!.size && exists!![index].path == path)
+                        if (index < exists!!.size && exists!![index].path == path)
                             exists!!.remove(exists!![index])
                     }
 
                     adapter = FileDetailAdapter(mGridView, exists, this@FileImageDetailAct, false, object : OnLongClick {
                         @SuppressLint("RestrictedApi")
-                        override fun onLongClick(path: String,name: String) {
-                            itemLongHandle(path,name)
+                        override fun onLongClick(path: String, name: String) {
+                            itemLongHandle(path, name)
                         }
                     })
                     mGridView.adapter = adapter
@@ -165,9 +173,11 @@ class FileImageDetailAct : BaseActivity() {
         for (index in 0 until exists!!.size) {
             val media = exists!![index]
             for (position in 0 until select!!.size) {
-                val selectItem = select[position]
-                if (selectItem.name == media.name) {
-                    select.remove(selectItem)
+                if (position < select.size) {
+                    val selectItem = select[position]
+                    if (selectItem.name == media.name) {
+                        select.remove(selectItem)
+                    }
                 }
             }
         }
@@ -180,6 +190,7 @@ class FileImageDetailAct : BaseActivity() {
 
                 val media = Media(outPath, it.name, it.time, it.mediaType, it.size, it.id, it.parentDir)
                 exists!!.add(media)
+                selectsUpload!!.add(media)
 
                 val isSuccess = FileUtils.CopySdcardFile(it.path, outPath)
                 val file = File(it.path)
@@ -199,11 +210,44 @@ class FileImageDetailAct : BaseActivity() {
 
         adapter = FileDetailAdapter(mGridView, exists, this@FileImageDetailAct, false, object : OnLongClick {
             @SuppressLint("RestrictedApi")
-            override fun onLongClick(path: String,name: String) {
-                itemLongHandle(path,name)
+            override fun onLongClick(path: String, name: String) {
+                itemLongHandle(path, name)
             }
         })
         mGridView.adapter = adapter
+
+        if (selectsUpload!!.size > 0) {
+            upLoadPics(selectsUpload)
+        }
+
+    }
+
+    /**
+     * 批量上传图片
+     */
+    private fun upLoadPics(select: ArrayList<Media>?) {
+        val imei = SpUtil.getInstance().getString("imei")
+        val files = HashMap<String, File>()
+        for (index in 0 until select!!.size) {
+            files[select[index].name] = File(select[index].path)
+        }
+        OkHttpUtils.post().addParams("dir", imei)
+                .files("file", files)
+                .url(Api.baseUrl)
+                .addHeader("method", Api.upLoadCloudPic)
+                .build().execute(object : StringCallback() {
+                    override fun onResponse(p0: String?, p1: Int) {
+                        LogUtils.e(p0)
+                        selectsUpload!!.clear()
+                    }
+
+                    override fun onError(p0: Call?, p1: Exception?, p2: Int) {
+                        selectsUpload!!.clear()
+                        if (p1 != null) {
+                            LogUtils.e(p1.message)
+                        }
+                    }
+                })
 
     }
 
@@ -245,13 +289,13 @@ class FileImageDetailAct : BaseActivity() {
         if (requestCode == 200 && resultCode == PickerConfig.RESULT_CODE) {
             select = data!!.getParcelableArrayListExtra<Media>(PickerConfig.EXTRA_RESULT)
 
-            if (null == select || select!!.size==0) {
+            if (null == select || select!!.size == 0) {
                 return
             }
             val imageParentPath = SpUtil.getInstance().getString("imageParentPath")
             if ("" == imageParentPath) {
                 val path = select!![0].path.split(select!![0].name)[0]
-                SpUtil.getInstance().putString("imageParentPath",path)
+                SpUtil.getInstance().putString("imageParentPath", path)
             }
             setView(select)
         }

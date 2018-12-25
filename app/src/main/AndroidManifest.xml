@@ -48,6 +48,8 @@
 
         <activity android:name=".act.VideoPlayActivity" />
 
+        <activity android:name=".act.NoteDetailAct" />
+
     </application>
 
 </manifest>

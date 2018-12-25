@@ -1,5 +1,6 @@
 package king.steal.camara.base
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.NonNull
@@ -11,6 +12,8 @@ import android.widget.EditText
 import android.widget.Toast
 import king.steal.camara.R
 import king.steal.camara.utils.StatusBarCompat
+import king.steal.camara.utils.ToastUtils
+import king.steal.camara.widget.ShapeLoadingDialog
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -54,6 +57,23 @@ abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCall
      */
     abstract fun start()
 
+    fun showLoading(activity: Activity) {
+        ShapeLoadingDialog.showDialogForLoading(activity)
+
+    }
+
+    fun showLoading(activity: Activity, text: String) {
+        ShapeLoadingDialog.showDialogForLoading(activity,text)
+    }
+
+
+    fun hideLoading() {
+        ShapeLoadingDialog.cancelDialogForLoading()
+    }
+
+    fun showToast(text: String) {
+        ToastUtils.showToast(text)
+    }
 
     /**
      * 打卡软键盘

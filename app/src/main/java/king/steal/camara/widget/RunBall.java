@@ -82,6 +82,7 @@ public class RunBall extends View {
                 invalidate();
             }
         });
+        mAnimator.start();
     }
 
     @Override
@@ -113,7 +114,7 @@ public class RunBall extends View {
                 mAnimator.start();
                 break;
             case MotionEvent.ACTION_UP:
-//                mAnimator.pause();
+                mAnimator.pause();
                 break;
         }
         return true;
@@ -123,7 +124,7 @@ public class RunBall extends View {
     private void initBalls() {
         for (int i = 0; i < 2; i++) {
             Ball mBall = new Ball();
-            mBall.color = Color.RED;
+            mBall.color = Color.parseColor("#E68276");
             mBall.r = 80;
             mBall.vX = (float) (Math.pow(-1, Math.ceil(Math.random() * 1000)) * 20 * Math.random());
             mBall.vY = rangeInt(-15, 35);
@@ -132,7 +133,7 @@ public class RunBall extends View {
         }
         mBalls.get(1).x = 300;
         mBalls.get(1).y = 300;
-        mBalls.get(1).color = Color.BLUE;
+        mBalls.get(1).color = Color.parseColor("#2DAC7C");
     }
 
     /**

@@ -62,7 +62,7 @@ class MyApplication : Application(){
         Beta.autoInit = true
         Beta.showInterruptedStrategy = true
         Beta.initDelay = (5 * 1000).toLong()
-        val appId = "ac1400d910"
+        val appId = "5386bfaed5"
         Beta.autoCheckUpgrade = true
         Beta.canShowUpgradeActs.add(MainActivity::class.java)
         Beta.upgradeCheckPeriod = (1 * 1000).toLong()

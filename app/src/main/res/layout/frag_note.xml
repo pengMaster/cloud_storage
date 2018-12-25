@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_f2"
+    tools:ignore="HardcodedText">
+
+    <include
+        android:id="@+id/ll_top"
+        layout="@layout/layout_header" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_top"
+        android:divider="@color/white_f2"
+        android:dividerHeight="1dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

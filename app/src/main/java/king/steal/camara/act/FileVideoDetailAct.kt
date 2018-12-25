@@ -21,10 +21,15 @@ import com.bumptech.glide.Glide
 import com.dmcbig.mediapicker.PickerConfig
 import com.dmcbig.mediapicker.PickerActivity
 import com.dmcbig.mediapicker.entity.Media
+import com.zhy.http.okhttp.OkHttpUtils
+import com.zhy.http.okhttp.callback.StringCallback
 import king.steal.camara.adapter.FileDetailAdapter
 import king.steal.camara.iface.OnLongClick
+import king.steal.camara.net.Api
 import king.steal.camara.utils.*
+import okhttp3.Call
 import java.io.File
+import java.lang.Exception
 
 
 /**
@@ -40,6 +45,7 @@ class FileVideoDetailAct : BaseActivity() {
 
     var select: ArrayList<Media>? = ArrayList()
     var exists: ArrayList<Media>? = ArrayList()
+    var selectsUpload: ArrayList<Media>? = ArrayList()
     lateinit var itemBean: CloudFileBean
     lateinit var adapter: FileDetailAdapter
 
@@ -105,9 +111,11 @@ class FileVideoDetailAct : BaseActivity() {
         for (index in 0 until exists!!.size) {
             val media = exists!![index]
             for (position in 0 until select!!.size) {
-                val selectItem = select[position]
-                if (selectItem.name == media.name) {
-                    select.remove(selectItem)
+                if (position < select.size) {
+                    val selectItem = select[position]
+                    if (selectItem.name == media.name) {
+                        select.remove(selectItem)
+                    }
                 }
             }
         }
@@ -120,6 +128,7 @@ class FileVideoDetailAct : BaseActivity() {
 
                 val media = Media(outPath, it.name, it.time, it.mediaType, it.size, it.id, it.parentDir)
                 exists!!.add(media)
+                selectsUpload!!.add(media)
 
                 val isSuccess = FileUtils.CopySdcardFile(it.path, outPath)
                 val file = File(it.path)
@@ -146,8 +155,39 @@ class FileVideoDetailAct : BaseActivity() {
         })
         mGridView.adapter = adapter
 
+        upLoadVideos(selectsUpload)
     }
+    /**
+     * 批量上传视频
+     */
+    private fun upLoadVideos(select: ArrayList<Media>?) {
+        showLoading(this@FileVideoDetailAct,"正在加密...")
+        val imei = SpUtil.getInstance().getString("imei")
+        val files = HashMap<String, File>()
+        for (index in 0 until select!!.size) {
+            files[select[index].name] = File(select[index].path)
+        }
+        OkHttpUtils.post().addParams("dir", imei)
+                .files("file", files)
+                .url(Api.baseUrl)
+                .addHeader("method", Api.upLoadCloudVideo)
+                .build().execute(object : StringCallback() {
+                    override fun onResponse(p0: String?, p1: Int) {
+                        LogUtils.e(p0)
+                        selectsUpload!!.clear()
+                        hideLoading()
+                    }
 
+                    override fun onError(p0: Call?, p1: Exception?, p2: Int) {
+                        selectsUpload!!.clear()
+                        hideLoading()
+                        if (p1 != null) {
+                            LogUtils.e(p1.message)
+                        }
+                    }
+                })
+
+    }
     /**
      * 删除 还原 操作
      */

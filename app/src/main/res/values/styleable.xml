@@ -9,4 +9,9 @@
         <attr name="gifViewStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="LoadingView">
+        <attr name="loadingText" format="string" />
+        <attr name="loading_text_color" format="color" />
+        <attr name="loadingTextAppearance" format="reference" />
+    </declare-styleable>
 </resources>
