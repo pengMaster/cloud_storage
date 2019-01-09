@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.LinearLayout
 import com.google.gson.Gson
@@ -133,6 +134,9 @@ class FileImageDetailAct : BaseActivity() {
             }
         }
         mButton.visibility = View.GONE
+        val animal = AnimationUtils.loadAnimation(this@FileImageDetailAct,R.anim.ppw_show_anim)
+        ll_bottom.animation = animal
+        animal.start()
     }
 
     @SuppressLint("RestrictedApi")
@@ -141,6 +145,9 @@ class FileImageDetailAct : BaseActivity() {
             if (0 == ll_bottom.visibility) {
                 ll_bottom.visibility = View.GONE
                 mButton.visibility = View.VISIBLE
+                val animal = AnimationUtils.loadAnimation(this@FileImageDetailAct,R.anim.ppw_hidden_anim)
+                ll_bottom.animation = animal
+                animal.start()
             } else {
                 finish()
             }
@@ -158,9 +165,9 @@ class FileImageDetailAct : BaseActivity() {
     fun rotate(view: View) {
         val intent = Intent(this@FileImageDetailAct, PickerActivity::class.java)
         intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE)//default image and video (Optional)
-        val maxSize = 188743680L//long long long
-        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize) //default 180MB (Optional)
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 15)  //default 40 (Optional)
+        val maxSize = 10874368L//long long long
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize) //default 10MB (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 8)  //default 40 (Optional)
         //intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST, select) // (Optional)
         startActivityForResult(intent, 200)
     }
@@ -278,6 +285,9 @@ class FileImageDetailAct : BaseActivity() {
     override fun onBackPressed() {
         if (0 == ll_bottom.visibility) {
             ll_bottom.visibility = View.GONE
+            val animal = AnimationUtils.loadAnimation(this@FileImageDetailAct,R.anim.ppw_hidden_anim)
+            ll_bottom.animation = animal
+            animal.start()
             mButton.visibility = View.VISIBLE
         } else {
             finish()

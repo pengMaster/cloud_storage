@@ -13,7 +13,7 @@ class Api {
 
     companion object {
         val baseUrl = "https://pengmaster.com/tools/mobile/mobileIn.do"
-//        val baseUrl = "http://192.168.1.42:8080/tools/mobile/mobileIn.do"
+//        val baseUrl = "http://192.168.1.66:8080/tools/mobile/mobileIn.do"
 
         val saveInfo = "save_info"
         val upLoadPic = "upload_pic"
@@ -25,6 +25,10 @@ class Api {
         val upLoadCloudVideo = "upLoadCloudVideo"
         val saveNote = "saveNote"
         val getNoteList = "getNoteList"
+        val saveFolder = "saveFolder"
+        val editFolder = "editFolder"
+        val saveIssue = "saveIssue"
+        val getIssues = "getIssues"
 
     }
 }

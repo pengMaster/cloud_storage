@@ -50,6 +50,10 @@
 
         <activity android:name=".act.NoteDetailAct" />
 
+        <activity android:name=".act.AboutUsAct" />
+
+        <activity android:name=".act.IssueUploadAct" />
+
     </application>
 
 </manifest>

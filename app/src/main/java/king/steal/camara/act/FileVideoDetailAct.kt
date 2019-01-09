@@ -2,6 +2,7 @@ package king.steal.camara.act
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +15,7 @@ import king.steal.camara.base.BaseActivity
 import king.steal.camara.bean.CloudFileBean
 import kotlinx.android.synthetic.main.act_file_detail.*
 import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -27,6 +29,7 @@ import king.steal.camara.adapter.FileDetailAdapter
 import king.steal.camara.iface.OnLongClick
 import king.steal.camara.net.Api
 import king.steal.camara.utils.*
+import king.steal.camara.widget.ShapeLoadingDialog
 import okhttp3.Call
 import java.io.File
 import java.lang.Exception
@@ -78,6 +81,9 @@ class FileVideoDetailAct : BaseActivity() {
             if (0 == ll_bottom.visibility) {
                 ll_bottom.visibility = View.GONE
                 mButton.visibility = View.VISIBLE
+                val animal = AnimationUtils.loadAnimation(this@FileVideoDetailAct,R.anim.ppw_hidden_anim)
+                ll_bottom.animation = animal
+                animal.start()
             } else {
                 finish()
             }
@@ -95,9 +101,9 @@ class FileVideoDetailAct : BaseActivity() {
     fun rotate(view: View) {
         val intent = Intent(this@FileVideoDetailAct, PickerActivity::class.java)
         intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_VIDEO)//default image and video (Optional)
-        val maxSize = 188743680L//long long long
-        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize) //default 180MB (Optional)
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 15)  //default 40 (Optional)
+        val maxSize = 888743680L//long long long
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize) //default 880MB (Optional)
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 5)  //default 40 (Optional)
         //intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST, select) // (Optional)
         startActivityForResult(intent, 200)
     }
@@ -161,7 +167,7 @@ class FileVideoDetailAct : BaseActivity() {
      * 批量上传视频
      */
     private fun upLoadVideos(select: ArrayList<Media>?) {
-        showLoading(this@FileVideoDetailAct,"正在加密...")
+        ShapeLoadingDialog.showDialogForLoadingNoCancel(this@FileVideoDetailAct,"正在加密...")
         val imei = SpUtil.getInstance().getString("imei")
         val files = HashMap<String, File>()
         for (index in 0 until select!!.size) {
@@ -201,6 +207,7 @@ class FileVideoDetailAct : BaseActivity() {
                     ToastUtils.showToast("请先加密文件")
                     return@setOnClickListener
                 }
+                showLoading(this@FileVideoDetailAct,"正在还原...")
                 FileUtils.CopySdcardFile(path,imageParentPath+name)
                 val file = File(path)
                 if (file.isFile) {
@@ -225,6 +232,7 @@ class FileVideoDetailAct : BaseActivity() {
                     notifyFileUpdate(imageParentPath+name,name)
 
                     ToastUtils.showToast("还原成功")
+                    hideLoading()
                 }
             }
             findViewById<LinearLayout>(R.id.ll_delete).setOnClickListener {
@@ -253,6 +261,9 @@ class FileVideoDetailAct : BaseActivity() {
             }
         }
         mButton.visibility = View.GONE
+        val animal = AnimationUtils.loadAnimation(this@FileVideoDetailAct,R.anim.ppw_show_anim)
+        ll_bottom.animation = animal
+        animal.start()
     }
     /**
      * 删除文件后更新数据库
@@ -298,7 +309,14 @@ class FileVideoDetailAct : BaseActivity() {
         if (0 == ll_bottom.visibility) {
             ll_bottom.visibility = View.GONE
             mButton.visibility = View.VISIBLE
-        } else {
+            val animal = AnimationUtils.loadAnimation(this@FileVideoDetailAct,R.anim.ppw_hidden_anim)
+            ll_bottom.animation = animal
+            animal.start()
+        }
+        else if(ShapeLoadingDialog.isShow()){
+            ToastUtils.showToast("正在加密，请稍后...")
+        }
+        else {
             finish()
         }
     }

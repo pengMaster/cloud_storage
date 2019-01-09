@@ -18,6 +18,7 @@ import king.steal.camara.mvp.p.GestureCreatePresenter;
 import king.steal.camara.utils.LockPatternUtils;
 import king.steal.camara.utils.SpUtil;
 import king.steal.camara.utils.SystemBarHelper;
+import king.steal.camara.utils.ToastUtils;
 import king.steal.camara.widget.LockPatternView;
 import king.steal.camara.widget.LockPatternViewPattern;
 
@@ -41,7 +42,7 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public int layoutId() {
-         return R.layout.act_password;
+        return R.layout.act_password;
     }
 
     @Override
@@ -89,6 +90,9 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
             case R.id.btn_reset:
                 setStepOne();
                 break;
+            case R.id.btn_back:
+                finish();
+                break;
         }
     }
 
@@ -101,10 +105,15 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void gotoLockMainActivity() {
-        SpUtil.getInstance().putBoolean(AppConstants.LOCK_STATE, true); //开启应用锁开关
+        boolean isSplash = getIntent().getBooleanExtra("isSplash", false);
+        if (isSplash) {
+            SpUtil.getInstance().putBoolean(AppConstants.LOCK_STATE, true); //开启应用锁开关
 //        startService(new Intent(this, LockService.class));
-        SpUtil.getInstance().putBoolean(AppConstants.LOCK_IS_FIRST_LOCK, false);
-        startActivity(new Intent(this, MainActivity.class));
+            SpUtil.getInstance().putBoolean(AppConstants.LOCK_IS_FIRST_LOCK, false);
+            startActivity(new Intent(this, MainActivity.class));
+        } else {
+            ToastUtils.showToast("重置成功");
+        }
         finish();
     }
 

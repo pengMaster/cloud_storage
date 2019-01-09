@@ -111,10 +111,10 @@ public class RunBall extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mAnimator.start();
+//                mAnimator.start();
                 break;
             case MotionEvent.ACTION_UP:
-                mAnimator.pause();
+//                mAnimator.pause();
                 break;
         }
         return true;

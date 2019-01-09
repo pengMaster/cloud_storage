@@ -66,6 +66,8 @@
     <color name="black_34">#341b1c</color>
     <color name="green_top">#248460</color>
     <color name="green">#2DAC7C</color>
+    <color name="grey_line">#f1f2f7</color>
+
 
     <color name="tr_black50">#80000000</color><!--50透明度-->
 

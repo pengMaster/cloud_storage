@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="@color/white_f2">
+
+    <ImageView
+        android:id="@+id/mIvAvatar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/main_user_top_avatar" />
+
+    <TextView
+        android:id="@+id/mTvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/mIvAvatar"
+        android:layout_marginStart="5dp"
+        android:textSize="@dimen/sp12"
+        android:text="A788586847586bn" />
+
+    <TextView
+        android:id="@+id/mTvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:textSize="@dimen/sp10"
+        android:text="A788586847586bn" />
+    <TextView
+        android:id="@+id/mTvContent"
+        android:layout_below="@+id/mTvName"
+        android:layout_toEndOf="@+id/mIvAvatar"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="测试"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textSize="@dimen/sp14"
+        android:textColor="@color/black_34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

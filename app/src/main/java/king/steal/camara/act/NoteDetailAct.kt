@@ -1,6 +1,7 @@
 package king.steal.camara.act
 
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.gson.Gson
@@ -47,7 +48,7 @@ class NoteDetailAct : BaseActivity() {
 
     override fun initView() {
         ll_top.apply {
-            findViewById<ImageView>(R.id.iv_topbar_cancel).setOnClickListener {
+            findViewById<Button>(R.id.btnBack).setOnClickListener {
                 finish()
             }
             findViewById<TextView>(R.id.tv_topbar_title).text = "笔记内容"

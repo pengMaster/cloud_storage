@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import king.steal.camara.R;
+import king.steal.camara.utils.ToastUtils;
 
 
 public class ShapeLoadingDialog {
@@ -70,6 +71,32 @@ public class ShapeLoadingDialog {
         }
         return mDialog;
     }
+
+    /**
+     * 显示加载对话框
+     *
+     * @param context 上下文
+     */
+    public static Dialog showDialogForLoadingNoCancel(final Activity context, String text) {
+        mDialog = new Dialog(context, R.style.custom_dialog);
+        mDialogContentView = LayoutInflater.from(context).inflate(R.layout.layout_dialog, null);
+        mDialog.setContentView(mDialogContentView);
+        mDialog.setCanceledOnTouchOutside(false);
+        TextView tvContent = mDialogContentView.findViewById(R.id.tv_content);
+        tvContent.setText(text);
+        // 监听 Dialog 的 Key 事件
+        mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                ToastUtils.showToast("正在加密，请稍后...");
+            }
+        });
+        mDialog.setCancelable(false);
+        if (null != mDialog && !mDialog.isShowing()) {
+            mDialog.show();
+        }
+        return mDialog;
+    }
     public void setBackground(int color) {
         GradientDrawable gradientDrawable = (GradientDrawable) mDialogContentView.getBackground();
         gradientDrawable.setColor(color);
@@ -82,7 +109,12 @@ public class ShapeLoadingDialog {
             mDialog.dismiss();
         }
     }
-
+    public static Boolean isShow() {
+        if (null != mDialog) {
+           return mDialog.isShowing();
+        }
+        return false;
+    }
     public static void cancelDialogForLoading() {
         if (null != mDialog) {
             mDialog.dismiss();

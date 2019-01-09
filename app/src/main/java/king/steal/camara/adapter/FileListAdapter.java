@@ -22,6 +22,7 @@ import king.steal.camara.act.FileVideoDetailAct;
 import king.steal.camara.base.BaseAppAdapter;
 import king.steal.camara.base.BaseHolderL;
 import king.steal.camara.bean.CloudFileBean;
+import king.steal.camara.iface.OnSelectItem;
 
 /**
  * <pre>
@@ -35,10 +36,12 @@ import king.steal.camara.bean.CloudFileBean;
 public class FileListAdapter extends BaseAppAdapter {
 
     private Activity mActivity;
+    private OnSelectItem mOnSelectItem;
 
-    public FileListAdapter(AbsListView listView, List datas,Activity activity) {
+    public FileListAdapter(AbsListView listView, List datas, Activity activity, OnSelectItem onSelectItem) {
         super(listView, datas);
         mActivity = activity;
+        mOnSelectItem = onSelectItem;
     }
 
     @Override
@@ -87,6 +90,13 @@ public class FileListAdapter extends BaseAppAdapter {
                     }
                     intent.putExtra("item", new Gson().toJson(data));
                     mActivity.startActivity(intent);
+                }
+            });
+
+            ivMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnSelectItem.onSelect(data);
                 }
             });
         }

@@ -94,6 +94,7 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         val intent = Intent()
         val isFirstLock = SpUtil.getInstance().getBoolean(AppConstants.LOCK_IS_FIRST_LOCK, true)
         if (isFirstLock) {
+            intent.putExtra("isSplash", true)
             intent.setClass(this@SplashAct, CreatePwdActivity::class.java)
         } else {
             intent.setClass(this@SplashAct, GestureSelfUnlockActivity::class.java)

@@ -4,8 +4,8 @@
     android:shape="rectangle">
     <!-- 填充的颜色,渐变色 -->
     <gradient
-        android:startColor="#fe6b55"
-        android:endColor="#e2211c"
+        android:startColor="#5dc29c"
+        android:endColor="#2DAC7C"
         android:angle="0" />
     <!-- 设置按钮的四个角为弧形 -->
     <!-- android:radius 弧形的半径 -->
