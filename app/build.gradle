@@ -10,8 +10,8 @@ android {
         applicationId "king.cloud.space"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 20181224
-        versionName "1.0.2"
+        versionCode 20190109
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -73,9 +73,9 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:2.0.1'
 
     //视频播放
-    compile 'com.shuyu:gsyVideoPlayer-java:5.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-java:5.0.1'
     //主流cpu
-    compile 'com.shuyu:gsyVideoPlayer-armv7a:5.0.1'
-    compile 'com.shuyu:gsyVideoPlayer-arm64:5.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-armv7a:5.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-arm64:5.0.1'
 
 }
