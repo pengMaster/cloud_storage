@@ -56,8 +56,7 @@ public class IssueAdapter extends BaseAppAdapter {
 
             CloudIssueBean data = (CloudIssueBean) getData();
             mTvContent.setText(data.getContent());
-            String imei = SpUtil.getInstance().getString("imei");
-            mTvName.setText(imei);
+            mTvName.setText(data.getUserId());
             mTvTime.setText(data.getCreateTime());
         }
     }

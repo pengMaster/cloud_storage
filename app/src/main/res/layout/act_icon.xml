@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_f2"
+    android:orientation="vertical"
+    >
+
+    <include
+        android:id="@+id/mLlHeader"
+        layout="@layout/layout_header" />
+
+    <LinearLayout
+        android:id="@+id/mLlDefault"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/green_hint"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        >
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_space"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_34"
+            android:textSize="@dimen/sp18"
+            android:layout_marginStart="20dp"
+            android:text="默认图标"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlCalculator"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:layout_marginTop="1dp"
+        android:paddingStart="10dp"
+        >
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_calculator"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_34"
+            android:textSize="@dimen/sp18"
+            android:layout_marginStart="20dp"
+            android:text="计算器"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlWeather"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:layout_marginTop="1dp"
+        android:paddingStart="10dp"
+        >
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_weather"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_34"
+            android:textSize="@dimen/sp18"
+            android:layout_marginStart="20dp"
+            android:text="天气"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLlCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:layout_marginTop="1dp"
+        android:paddingStart="10dp"
+        >
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_calendar"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_34"
+            android:textSize="@dimen/sp18"
+            android:layout_marginStart="20dp"
+            android:text="日历"/>
+
+    </LinearLayout>
+
+</LinearLayout>

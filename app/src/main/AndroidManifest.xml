@@ -34,6 +34,48 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity-alias
+            android:name=".act.calculator"
+            android:enabled="false"
+            android:icon="@mipmap/ic_calculator"
+            android:label="计算器"
+            android:targetActivity=".act.SplashAct">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".act.calendar"
+            android:enabled="false"
+            android:icon="@mipmap/ic_calendar"
+            android:label="日历"
+            android:targetActivity=".act.SplashAct">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".act.weather"
+            android:enabled="false"
+            android:icon="@mipmap/ic_weather"
+            android:label="天气"
+            android:targetActivity=".act.SplashAct">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity android:name=".act.IconAct" />
+
         <activity android:name=".act.MainActivity" />
 
         <activity android:name=".act.GestureSelfUnlockActivity" />

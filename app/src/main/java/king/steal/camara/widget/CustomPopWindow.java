@@ -170,7 +170,9 @@ public class CustomPopWindow implements PopupWindow.OnDismissListener {
 
         if (mWidth != 0 && mHeight != 0) {
             mPopupWindow = new PopupWindow(mContentView, mWidth, mHeight);
-        } else {
+        } else if (mWidth ==1){
+            mPopupWindow = new PopupWindow(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }else {
             mPopupWindow = new PopupWindow(mContentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         if (mAnimationStyle != -1) {

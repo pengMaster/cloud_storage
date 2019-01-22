@@ -64,8 +64,10 @@
     <color name="hint_rad">#c25c59</color>
     <color name="red_ff2">#ff2d55</color>
     <color name="black_34">#341b1c</color>
+    <color name="grey_bc">#818080</color>
     <color name="green_top">#248460</color>
     <color name="green">#2DAC7C</color>
+    <color name="green_hint">#afd6c8</color>
     <color name="grey_line">#f1f2f7</color>
 
 

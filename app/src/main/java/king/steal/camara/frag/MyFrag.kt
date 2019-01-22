@@ -10,6 +10,7 @@ import king.steal.camara.AppConstants
 import king.steal.camara.R
 import king.steal.camara.act.AboutUsAct
 import king.steal.camara.act.CreatePwdActivity
+import king.steal.camara.act.IconAct
 import king.steal.camara.act.IssueUploadAct
 import king.steal.camara.base.BaseFragment
 import king.steal.camara.utils.LogUtils
@@ -57,9 +58,9 @@ class MyFrag : BaseFragment() {
             intent.setClass(activity, IssueUploadAct::class.java)
             startActivity(intent)
         }
-        mRlUs.setOnClickListener {
+        mRlChangeIcon.setOnClickListener {
             val intent = Intent()
-            intent.setClass(activity, AboutUsAct::class.java)
+            intent.setClass(activity, IconAct::class.java)
             startActivity(intent)
         }
     }

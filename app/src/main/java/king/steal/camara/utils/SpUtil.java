@@ -7,8 +7,11 @@ import android.preference.PreferenceManager;
 
 
 public class SpUtil {
-    private volatile static SpUtil mInstance;
 
+    public static final String icon_style = "icon_style";
+
+
+    private volatile static SpUtil mInstance;
     private Context mContext;
     private SharedPreferences mPref;
 
