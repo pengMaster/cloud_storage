@@ -20,5 +20,6 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("king.bird.camaradetector", appContext.packageName)
+        System.out.print(Math.round(5.5))
     }
 }
