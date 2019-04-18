@@ -35,13 +35,13 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp16" />
 
-        <king.steal.camara.widget.ListViewToScrollView
+        <ListView
             android:id="@+id/mListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp">
 
-        </king.steal.camara.widget.ListViewToScrollView>
+        </ListView>
     </LinearLayout>
 
 

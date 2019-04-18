@@ -114,7 +114,6 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
         boolean isSplash = getIntent().getBooleanExtra("isSplash", false);
         if (isSplash) {
             SpUtil.getInstance().putBoolean(AppConstants.LOCK_STATE, true); //开启应用锁开关
-//        startService(new Intent(this, LockService.class));
             SpUtil.getInstance().putBoolean(AppConstants.LOCK_IS_FIRST_LOCK, false);
             SplashViewSettings splashViewSettings = new SplashViewSettings();
             splashViewSettings.setTargetClass(MainActivity.class);
@@ -145,8 +144,8 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
 
         } else {
             ToastUtils.showToast("重置成功");
+            finish();
         }
-        finish();
     }
 
     /**

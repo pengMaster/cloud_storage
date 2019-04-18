@@ -10,8 +10,8 @@ android {
         applicationId "king.cloud.space"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 20190321
-        versionName "1.0.6"
+        versionCode 20190418
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
