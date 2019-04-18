@@ -11,11 +11,13 @@ import java.io.File
 import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.AdapterView
+import cdc.sed.yff.nm.sp.SpotManager
 import com.google.gson.Gson
 import com.zhy.http.okhttp.OkHttpUtils
 import com.zhy.http.okhttp.callback.StringCallback
 import king.steal.camara.R
 import king.steal.camara.adapter.FileListAdapter
+import king.steal.camara.base.AppManager
 import king.steal.camara.base.BaseActivity
 import king.steal.camara.bean.CloudFileBean
 import king.steal.camara.bean.CloudFileParser
@@ -213,6 +215,8 @@ class MainActivity : BaseActivity() {
                 mExitTime = System.currentTimeMillis()
 
             } else {
+                AppManager.getAppManager().finishAllActivity()
+                SpotManager.getInstance(applicationContext).onAppExit()
                 System.exit(0)
                 finish()
             }

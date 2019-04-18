@@ -21,6 +21,7 @@ abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCall
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
+        AppManager.getAppManager().addActivity(this)
         initView()
         initData()
         start()
