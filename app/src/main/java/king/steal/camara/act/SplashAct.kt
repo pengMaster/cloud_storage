@@ -15,10 +15,14 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
+import cdc.sed.yff.nm.sp.SplashViewSettings
+import cdc.sed.yff.nm.sp.SpotListener
+import cdc.sed.yff.nm.sp.SpotManager
 import com.google.gson.Gson
 import king.steal.camara.AppConstants
 import king.steal.camara.MyApplication
 import king.steal.camara.R
+import king.steal.camara.base.AppManager
 import king.steal.camara.base.BaseActivity
 import king.steal.camara.bean.User
 import king.steal.camara.net.Api
@@ -70,6 +74,8 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
 
         setContentView(R.layout.activity_splash)
 
+        AppManager.getAppManager().addActivity(this)
+
         initView()
 
         //渐变展示启动屏
@@ -120,7 +126,6 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         val intent = Intent()
         val isFirstLock = SpUtil.getInstance().getBoolean(AppConstants.LOCK_IS_FIRST_LOCK, true)
         if (isFirstLock) {
-            intent.putExtra("isSplash", true)
             intent.setClass(this@SplashAct, CreatePwdActivity::class.java)
         } else {
             intent.setClass(this@SplashAct, GestureSelfUnlockActivity::class.java)
@@ -229,5 +234,10 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         } else {
             finish()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SpotManager.getInstance(applicationContext).onDestroy()
     }
 }

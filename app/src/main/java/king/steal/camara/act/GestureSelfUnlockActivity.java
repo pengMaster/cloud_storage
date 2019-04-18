@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
 import java.util.List;
 
+import cdc.sed.yff.nm.sp.SplashViewSettings;
+import cdc.sed.yff.nm.sp.SpotListener;
+import cdc.sed.yff.nm.sp.SpotManager;
 import king.steal.camara.AppConstants;
 import king.steal.camara.R;
 import king.steal.camara.base.BaseActivity;
@@ -34,6 +38,7 @@ public class GestureSelfUnlockActivity extends BaseActivity {
     private String pkgName; //解锁应用的包名
     private CommLockInfoManager mManager;
     private RelativeLayout mTopLayout;
+    private RelativeLayout unlock_layout;
 
     private TextureView mTextureView;
 
@@ -50,7 +55,7 @@ public class GestureSelfUnlockActivity extends BaseActivity {
         mTopLayout = (RelativeLayout) findViewById(R.id.top_layout);
         mTextureView = (TextureView) findViewById(R.id.texture_view);
         btn_back = (ImageView) findViewById(R.id.btn_back);
-//        mTopLayout.setPadding(0, SystemBarHelper.getStatusBarHeight(this), 0, 0);
+        unlock_layout = (RelativeLayout) findViewById(R.id.unlock_layout);
     }
 
     @Override
@@ -91,8 +96,33 @@ public class GestureSelfUnlockActivity extends BaseActivity {
             public void onPatternDetected(List<LockPatternView.Cell> pattern) {
                 if (mLockPatternUtils.checkPattern(pattern)) { //解锁成功,更改数据库状态
                     mLockPatternView.setDisplayMode(LockPatternView.DisplayMode.Correct);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
+                    SplashViewSettings splashViewSettings = new SplashViewSettings();
+                    splashViewSettings.setTargetClass(MainActivity.class);
+                    splashViewSettings.setAutoJumpToTargetWhenShowFailed(true);
+                    splashViewSettings.setSplashViewContainer(unlock_layout);
+                    SpotManager.getInstance(getApplicationContext()).showSplash(getApplicationContext(),
+                            splashViewSettings, new SpotListener() {
+                                @Override
+                                public void onShowSuccess() {
+                                    finish();
+                                }
+
+                                @Override
+                                public void onShowFailed(int i) {
+                                    finish();
+                                }
+
+                                @Override
+                                public void onSpotClosed() {
+                                    finish();
+                                }
+
+                                @Override
+                                public void onSpotClicked(boolean b) {
+                                    finish();
+                                }
+                            });
+
                 } else {
                     mLockPatternView.setDisplayMode(LockPatternView.DisplayMode.Wrong);
                     if (pattern.size() >= LockPatternUtils.MIN_PATTERN_REGISTER_FAIL) {
@@ -124,6 +154,31 @@ public class GestureSelfUnlockActivity extends BaseActivity {
             mLockPatternView.clearPattern();
         }
     };
+    @Override
+    public void onBackPressed() {
+        // 如果有需要，可以点击后退关闭插播广告。
+        if (SpotManager.getInstance(getApplicationContext()).isSpotShowing()) {
+            SpotManager.getInstance(getApplicationContext()).hideSpot();
+        }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 插屏广告
+        SpotManager.getInstance(getApplicationContext()).onPause();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 插屏广告
+        SpotManager.getInstance(getApplicationContext()).onStop();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 开屏展示界面的 onDestroy() 回调方法中调用
+        SpotManager.getInstance(getApplicationContext()).onDestroy();
+    }
 }

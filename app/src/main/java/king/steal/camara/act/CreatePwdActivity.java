@@ -3,12 +3,16 @@ package king.steal.camara.act;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
 import java.util.List;
 
+import cdc.sed.yff.nm.sp.SplashViewSettings;
+import cdc.sed.yff.nm.sp.SpotListener;
+import cdc.sed.yff.nm.sp.SpotManager;
 import king.steal.camara.AppConstants;
 import king.steal.camara.R;
 import king.steal.camara.base.BaseActivity;
@@ -32,6 +36,7 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
     private TextView mLockTip;
     private LockPatternView mLockPatternView;
     private TextView mBtnReset;
+    private LinearLayout llLayout;
     //图案锁相关
     private LockStage mUiStage = LockStage.Introduction;
     protected List<LockPatternView.Cell> mChosenPattern = null; //密码
@@ -49,6 +54,7 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
     public void initView() {
         mLockPatternView = (LockPatternView) findViewById(R.id.lock_pattern_view);
         mLockTip = (TextView) findViewById(R.id.lock_tip);
+        llLayout = (LinearLayout) findViewById(R.id.llLayout);
         mBtnReset = (TextView) findViewById(R.id.btn_reset);
         mTopLayout = (RelativeLayout) findViewById(R.id.top_layout);
 //        mTopLayout.setPadding(0, SystemBarHelper.getStatusBarHeight(this), 0, 0);
@@ -110,7 +116,33 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
             SpUtil.getInstance().putBoolean(AppConstants.LOCK_STATE, true); //开启应用锁开关
 //        startService(new Intent(this, LockService.class));
             SpUtil.getInstance().putBoolean(AppConstants.LOCK_IS_FIRST_LOCK, false);
-            startActivity(new Intent(this, MainActivity.class));
+            SplashViewSettings splashViewSettings = new SplashViewSettings();
+            splashViewSettings.setTargetClass(MainActivity.class);
+            splashViewSettings.setAutoJumpToTargetWhenShowFailed(true);
+            splashViewSettings.setSplashViewContainer(llLayout);
+            SpotManager.getInstance(getApplicationContext()).showSplash(getApplicationContext(),
+                    splashViewSettings, new SpotListener() {
+                        @Override
+                        public void onShowSuccess() {
+                            finish();
+                        }
+
+                        @Override
+                        public void onShowFailed(int i) {
+                            finish();
+                        }
+
+                        @Override
+                        public void onSpotClosed() {
+                            finish();
+                        }
+
+                        @Override
+                        public void onSpotClicked(boolean b) {
+                            finish();
+                        }
+                    });
+
         } else {
             ToastUtils.showToast("重置成功");
         }
