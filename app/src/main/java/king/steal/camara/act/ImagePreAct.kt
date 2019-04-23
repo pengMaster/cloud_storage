@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.act_image_pre.*
  *     author : Wp
  *     e-mail : 18141924293@163.com
  *     time   : 2018/12/18
- *     desc   :
+ *     desc   : 图片预览
  *     version: 1.0
  * </pre>
  */
