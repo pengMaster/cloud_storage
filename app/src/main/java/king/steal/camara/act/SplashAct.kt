@@ -15,9 +15,6 @@ import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
-import cdc.sed.yff.nm.sp.SplashViewSettings
-import cdc.sed.yff.nm.sp.SpotListener
-import cdc.sed.yff.nm.sp.SpotManager
 import com.google.gson.Gson
 import king.steal.camara.AppConstants
 import king.steal.camara.MyApplication
@@ -239,6 +236,5 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
 
     override fun onDestroy() {
         super.onDestroy()
-        SpotManager.getInstance(applicationContext).onDestroy()
     }
 }

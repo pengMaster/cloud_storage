@@ -1,24 +1,30 @@
 package king.steal.camara.act;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
+import com.qq.e.ads.splash.SplashAD;
+import com.qq.e.ads.splash.SplashADListener;
+import com.qq.e.comm.util.AdError;
+
 import java.util.List;
 
-import cdc.sed.yff.nm.sp.SplashViewSettings;
-import cdc.sed.yff.nm.sp.SpotListener;
-import cdc.sed.yff.nm.sp.SpotManager;
 import king.steal.camara.AppConstants;
+import king.steal.camara.Constants;
 import king.steal.camara.R;
 import king.steal.camara.base.BaseActivity;
 import king.steal.camara.base.CommLockInfoManager;
 import king.steal.camara.utils.LockPatternUtils;
+import king.steal.camara.utils.LogUtils;
 import king.steal.camara.utils.SpUtil;
 import king.steal.camara.utils.SystemBarHelper;
 import king.steal.camara.widget.LockPatternView;
@@ -39,7 +45,6 @@ public class GestureSelfUnlockActivity extends BaseActivity {
     private CommLockInfoManager mManager;
     private RelativeLayout mTopLayout;
     private RelativeLayout unlock_layout;
-
     private TextureView mTextureView;
 
     private ImageView btn_back;
@@ -96,33 +101,44 @@ public class GestureSelfUnlockActivity extends BaseActivity {
             public void onPatternDetected(List<LockPatternView.Cell> pattern) {
                 if (mLockPatternUtils.checkPattern(pattern)) { //解锁成功,更改数据库状态
                     mLockPatternView.setDisplayMode(LockPatternView.DisplayMode.Correct);
-                    SplashViewSettings splashViewSettings = new SplashViewSettings();
-                    splashViewSettings.setTargetClass(MainActivity.class);
-                    splashViewSettings.setAutoJumpToTargetWhenShowFailed(true);
-                    splashViewSettings.setSplashViewContainer(unlock_layout);
-                    SpotManager.getInstance(getApplicationContext()).showSplash(getApplicationContext(),
-                            splashViewSettings, new SpotListener() {
+                    fetchSplashAD(GestureSelfUnlockActivity.this, unlock_layout,
+                            Constants.APPID, Constants.SplashPosID, new SplashADListener() {
                                 @Override
-                                public void onShowSuccess() {
-                                    finish();
+                                public void onADDismissed() {
+                                    LogUtils.e("onADDismissed");
+                                    intoMainActivity();
                                 }
 
                                 @Override
-                                public void onShowFailed(int i) {
-                                    finish();
+                                public void onNoAD(AdError adError) {
+                                    LogUtils.e("onNoAD：", adError.getErrorCode() + "___" + adError.getErrorMsg());
+                                    intoMainActivity();
                                 }
 
                                 @Override
-                                public void onSpotClosed() {
-                                    finish();
+                                public void onADPresent() {
+                                    LogUtils.e("onADPresent");
                                 }
 
                                 @Override
-                                public void onSpotClicked(boolean b) {
-                                    finish();
+                                public void onADClicked() {
+                                    LogUtils.e("onADClicked");
+
+                                }
+
+                                @Override
+                                public void onADTick(long l) {
+                                    LogUtils.e("onADTick");
+                                    if (l == 0)
+                                        intoMainActivity();
+                                }
+
+                                @Override
+                                public void onADExposure() {
+                                    LogUtils.e("onADExposure");
+
                                 }
                             });
-
                 } else {
                     mLockPatternView.setDisplayMode(LockPatternView.DisplayMode.Wrong);
                     if (pattern.size() >= LockPatternUtils.MIN_PATTERN_REGISTER_FAIL) {
@@ -154,31 +170,49 @@ public class GestureSelfUnlockActivity extends BaseActivity {
             mLockPatternView.clearPattern();
         }
     };
+
+    /**
+     * 拉取开屏广告，开屏广告的构造方法有3种，详细说明请参考开发者文档。
+     *
+     * @param activity    展示广告的 activity
+     * @param adContainer 展示广告的大容器
+     * @param appId       应用 ID
+     * @param posId       广告位 ID
+     * @param adListener  广告状态监听器
+     */
+    private void fetchSplashAD(Activity activity, ViewGroup adContainer,
+                               String appId, String posId, SplashADListener adListener) {
+        SplashAD splashAD = new SplashAD(activity, adContainer, appId, posId, adListener);
+    }
+
+
+    private void intoMainActivity() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
+    }
+
+    /** 开屏页一定要禁止用户对返回按钮的控制，否则将可能导致用户手动退出了App而广告无法正常曝光和计费 */
     @Override
-    public void onBackPressed() {
-        // 如果有需要，可以点击后退关闭插播广告。
-        if (SpotManager.getInstance(getApplicationContext()).isSpotShowing()) {
-            SpotManager.getInstance(getApplicationContext()).hideSpot();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME) {
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // 插屏广告
-        SpotManager.getInstance(getApplicationContext()).onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        // 插屏广告
-        SpotManager.getInstance(getApplicationContext()).onStop();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 开屏展示界面的 onDestroy() 回调方法中调用
-        SpotManager.getInstance(getApplicationContext()).onDestroy();
     }
+
 }

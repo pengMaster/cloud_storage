@@ -5,9 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import cdc.sed.yff.AdManager
-import cdc.sed.yff.nm.sp.SpotManager
-import cdc.sed.yff.nm.sp.SpotRequestListener
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.zhy.http.okhttp.OkHttpUtils
@@ -60,22 +57,8 @@ class MyApplication : Application(){
         OkHttpUtils.initClient(okHttpClient)
 
         initBugly()
-
-        initAd()
     }
 
-    private fun initAd() {
-        AdManager.getInstance(applicationContext).init("f2c2da67106677dc", "66286d44b0f33c77", true)
-        SpotManager.getInstance(applicationContext).requestSpot(object : SpotRequestListener {
-            override fun onRequestFailed(p0: Int) {
-                LogUtils.e("onRequestFailed:",p0.toString())
-            }
-
-            override fun onRequestSuccess() {
-                LogUtils.e("onRequestSuccess")
-            }
-        })
-    }
 
     private fun initBugly() {
         Beta.autoInit = true

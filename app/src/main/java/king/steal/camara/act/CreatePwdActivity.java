@@ -1,25 +1,29 @@
 package king.steal.camara.act;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import java.util.List;
+import com.qq.e.ads.splash.SplashAD;
+import com.qq.e.ads.splash.SplashADListener;
+import com.qq.e.comm.util.AdError;
 
-import cdc.sed.yff.nm.sp.SplashViewSettings;
-import cdc.sed.yff.nm.sp.SpotListener;
-import cdc.sed.yff.nm.sp.SpotManager;
+import java.util.List;
 import king.steal.camara.AppConstants;
+import king.steal.camara.Constants;
 import king.steal.camara.R;
 import king.steal.camara.base.BaseActivity;
 import king.steal.camara.bean.LockStage;
 import king.steal.camara.mvp.contract.GestureCreateContract;
 import king.steal.camara.mvp.p.GestureCreatePresenter;
 import king.steal.camara.utils.LockPatternUtils;
+import king.steal.camara.utils.LogUtils;
 import king.steal.camara.utils.SpUtil;
 import king.steal.camara.utils.SystemBarHelper;
 import king.steal.camara.utils.ToastUtils;
@@ -115,30 +119,42 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
         if (isSplash) {
             SpUtil.getInstance().putBoolean(AppConstants.LOCK_STATE, true); //开启应用锁开关
             SpUtil.getInstance().putBoolean(AppConstants.LOCK_IS_FIRST_LOCK, false);
-            SplashViewSettings splashViewSettings = new SplashViewSettings();
-            splashViewSettings.setTargetClass(MainActivity.class);
-            splashViewSettings.setAutoJumpToTargetWhenShowFailed(true);
-            splashViewSettings.setSplashViewContainer(llLayout);
-            SpotManager.getInstance(getApplicationContext()).showSplash(getApplicationContext(),
-                    splashViewSettings, new SpotListener() {
+            fetchSplashAD(CreatePwdActivity.this, llLayout,
+                    Constants.APPID, Constants.SplashPosID, new SplashADListener() {
                         @Override
-                        public void onShowSuccess() {
-                            finish();
+                        public void onADDismissed() {
+                            LogUtils.e("onADDismissed");
+                            intoMainActivity();
                         }
 
                         @Override
-                        public void onShowFailed(int i) {
-                            finish();
+                        public void onNoAD(AdError adError) {
+                            LogUtils.e("onNoAD：", adError.getErrorCode() + "___" + adError.getErrorMsg());
+                            intoMainActivity();
                         }
 
                         @Override
-                        public void onSpotClosed() {
-                            finish();
+                        public void onADPresent() {
+                            LogUtils.e("onADPresent");
                         }
 
                         @Override
-                        public void onSpotClicked(boolean b) {
-                            finish();
+                        public void onADClicked() {
+                            LogUtils.e("onADClicked");
+
+                        }
+
+                        @Override
+                        public void onADTick(long l) {
+                            LogUtils.e("onADTick");
+                            if (l == 0)
+                                intoMainActivity();
+                        }
+
+                        @Override
+                        public void onADExposure() {
+                            LogUtils.e("onADExposure");
+
                         }
                     });
 
@@ -146,6 +162,25 @@ public class CreatePwdActivity extends BaseActivity implements View.OnClickListe
             ToastUtils.showToast("重置成功");
             finish();
         }
+    }
+    /**
+     * 拉取开屏广告，开屏广告的构造方法有3种，详细说明请参考开发者文档。
+     *
+     * @param activity    展示广告的 activity
+     * @param adContainer 展示广告的大容器
+     * @param appId       应用 ID
+     * @param posId       广告位 ID
+     * @param adListener  广告状态监听器
+     */
+    private void fetchSplashAD(Activity activity, ViewGroup adContainer,
+                               String appId, String posId, SplashADListener adListener) {
+        SplashAD splashAD = new SplashAD(activity, adContainer, appId, posId, adListener);
+    }
+
+
+    private void intoMainActivity() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     /**

@@ -10,7 +10,6 @@ import java.io.File
 import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.AdapterView
-import cdc.sed.yff.nm.sp.SpotManager
 import com.google.gson.Gson
 import com.zhy.http.okhttp.OkHttpUtils
 import com.zhy.http.okhttp.callback.StringCallback
@@ -121,7 +120,6 @@ class MainActivity : BaseActivity() {
 
             } else {
                 AppManager.getAppManager().finishAllActivity()
-                SpotManager.getInstance(applicationContext).onAppExit()
                 System.exit(0)
                 finish()
             }
