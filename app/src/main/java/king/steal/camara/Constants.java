@@ -2,8 +2,8 @@ package king.steal.camara;
 
 public class Constants {
   //"1108757803", "2010054918431712"
-  public static final String APPID = "1101152570";
-  public static final String SplashPosID = "8863364436303842593";
+  public static final String APPID = "11011525701";
+  public static final String SplashPosID = "88633644363038425931";
   public static final String BannerPosID = "9079537218417626401";
   public static final String InterteristalPosID = "8575134060152130849";
   public static final String NativePosID = "5010320697302671";

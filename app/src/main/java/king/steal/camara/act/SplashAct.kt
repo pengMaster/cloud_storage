@@ -101,19 +101,23 @@ class SplashAct : Activity(), EasyPermissions.PermissionCallbacks {
         when(iconStyle) {
             "default" ->{
                 iv_web_icon.setImageResource(R.mipmap.ic_space)
-                tv_app_name.text = "私密云盘"
+                tv_app_name.text = "云盘"
+                tv_splash_desc.text = "专注于隐私保护"
             }
             "calculator" ->{
                 iv_web_icon.setImageResource(R.mipmap.ic_calculator)
                 tv_app_name.text = "计算器"
+                tv_splash_desc.text = "计算器"
             }
             "calendar" ->{
                 iv_web_icon.setImageResource(R.mipmap.ic_calendar)
                 tv_app_name.text = "日历"
+                tv_splash_desc.text = "日历"
             }
             "weather" ->{
                 iv_web_icon.setImageResource(R.mipmap.ic_weather)
                 tv_app_name.text = "天气"
+                tv_splash_desc.text = "天气"
             }
         }
     }
