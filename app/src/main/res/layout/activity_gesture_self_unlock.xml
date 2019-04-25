@@ -61,7 +61,7 @@
             android:textSize="14sp"/>
     </RelativeLayout>
 
-    <king.steal.camara.widget.LockPatternView
+    <king.cloud.camara.widget.LockPatternView
         android:id="@+id/unlock_lock_view"
         android:layout_width="290dp"
         android:layout_height="290dp"
